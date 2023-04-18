@@ -40,15 +40,15 @@ public class ContractController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Contract> updateCasino(@PathVariable long id, @RequestBody Contract contract){
+    public ResponseEntity<Contract> updateContract(@PathVariable long id, @RequestBody Contract contract){
         return new ResponseEntity<Contract>(contractService.updateContract(contract,id),HttpStatus.OK);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<Contract> deleteCasino(@PathVariable long id){
+    public ResponseEntity<Contract> deleteContract(@PathVariable long id){
         return new ResponseEntity<Contract>(contractService.deleteContract(id),HttpStatus.OK);
     }
     @GetMapping("/search")
-    public List<Contract> search(@RequestParam String term){
+    public List<Contract> searchContract(@RequestParam String term){
         return contractService.search(term);
     }
 
