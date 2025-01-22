@@ -7,19 +7,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
-@EnableWebMvc
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String [] PUBLIC_URLS = {
-            "/api/contract/**",
-            "/v3/api-docs",
-            "/swagger-resources/**",
+
+    public static final String[] PUBLIC_URLS = {
+            "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/webjars/**"
+            "/swagger-resources/**",
+            "/webjars/**",
+            "/api/contract/test" // Add specific public APIs if needed
     };
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -31,11 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(PUBLIC_URLS).authenticated()
+                // Allow public access to Swagger and specific public URLs
+                .antMatchers(PUBLIC_URLS).permitAll()
+                // Require authentication for all other requests
+                .anyRequest().authenticated()
                 .and()
-                .httpBasic()
-                .and()
-                .csrf().disable();
+                .httpBasic(); // Use basic authentication (or other configurations as needed)
     }
 }
